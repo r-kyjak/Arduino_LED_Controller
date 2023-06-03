@@ -1,5 +1,5 @@
 {
-  "additionalFiles": "../..,../..",
+  "additionalFiles": "../../..,../../..",
   "builtInToolsFolders": "",
   "compiler.optimization_flags": "",
   "customBuildProperties": "",
@@ -7,5 +7,5 @@
   "hardwareFolders": "/Users/radovankyjak/Library/Arduino15/packages",
   "otherLibrariesFolders": "/Users/radovankyjak/Documents/Arduino/libraries",
   "runtime.ide.version": "10607",
-  "sketchLocation": "/Users/radovankyjak/Temp/arduino/arduino.ino"
+  "sketchLocation": "/Users/radovankyjak/Temp/arduino"
 }

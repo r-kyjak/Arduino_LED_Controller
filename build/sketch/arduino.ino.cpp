@@ -23,15 +23,15 @@ enum actions {FLASH, STROBE, FADE, SMOOTH};
 void setup();
 #line 33 "/Users/radovankyjak/Temp/arduino/arduino.ino"
 void loop();
-#line 119 "/Users/radovankyjak/Temp/arduino/arduino.ino"
+#line 120 "/Users/radovankyjak/Temp/arduino/arduino.ino"
 void setColor(colors val);
-#line 194 "/Users/radovankyjak/Temp/arduino/arduino.ino"
+#line 195 "/Users/radovankyjak/Temp/arduino/arduino.ino"
 void turnOnOff(int val);
-#line 209 "/Users/radovankyjak/Temp/arduino/arduino.ino"
+#line 210 "/Users/radovankyjak/Temp/arduino/arduino.ino"
 void intensityUp();
-#line 220 "/Users/radovankyjak/Temp/arduino/arduino.ino"
+#line 221 "/Users/radovankyjak/Temp/arduino/arduino.ino"
 void intensityDown();
-#line 231 "/Users/radovankyjak/Temp/arduino/arduino.ino"
+#line 232 "/Users/radovankyjak/Temp/arduino/arduino.ino"
 void perform(actions val);
 #line 20 "/Users/radovankyjak/Temp/arduino/arduino.ino"
 void setup() { 
@@ -88,6 +88,7 @@ void loop() {
 				setColor(BLUE);
 				break;
 			case 0xF7D02F:
+				
 				break;
 			case 0xF730CF:
 				setColor(ORANGE);

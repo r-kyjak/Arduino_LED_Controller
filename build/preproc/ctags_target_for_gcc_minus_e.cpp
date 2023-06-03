@@ -72,6 +72,7 @@ void loop() {
     setColor(BLUE);
     break;
    case 0xF7D02F:
+
     break;
    case 0xF730CF:
     setColor(ORANGE);
