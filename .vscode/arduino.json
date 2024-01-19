@@ -1,7 +1,8 @@
 {
-    "sketch": "arduino.ino",
+    "sketch": "Arduino_LED_Controller.ino",
     "output": "build",
-    "port": "/dev/tty.usbserial-11210",
-    "board": "arduino:avr:uno",
-    "programmer": "avrispmkii"
+    "port": "COM4",
+    "board": "arduino:avr:nano",
+    "programmer": "avrispmkii",
+    "configuration": "cpu=atmega328old"
 }
