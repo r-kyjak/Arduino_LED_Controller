@@ -12,8 +12,8 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ
 uint32_t value;
 uint32_t previousVal;
 
-int state = 0; // 0-off 1-on
-int brightness = INIT_BRIGHTNESS;
+uint32_t state = 0; // 0-off 1-on
+uint32_t brightness = INIT_BRIGHTNESS;
 
 enum colors { RED, GREEN, BLUE, WHITE, DARK_ORANGE, CHARTREUSE, DARK_BLUE, ORANGE, ROYAL_BLUE, DARK_VIOLET, GOLDEN_ROD, LIGHT_SEA_GREEN, PURPLE, YELLOW, TEAL, MAGENTA };
 enum actions { FLASH, STROBE, FADE, SMOOTH };
@@ -39,15 +39,11 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Heartbeat");
-  Serial.print("State:");
-  Serial.println(state);
   while (!IrReceiver.isIdle());
   if (IrReceiver.decode()) {
     value = IrReceiver.decodedIRData.decodedRawData;
 
     if (value == 0x0) value = previousVal;
-    Serial.println(value, HEX);
 
     switch (value) {
       case 0xFF00EF00:
@@ -120,8 +116,6 @@ void loop() {
       case 0xE817EF00:
         break;
       default:
-        Serial.println("UNKNOWN");
-        Serial.println(IrReceiver.decodedIRData.decodedRawData, HEX);
         break;
     }
     previousVal = value;
@@ -137,78 +131,61 @@ void setColor(colors val) {
   uint32_t color;
   switch (val) {
     case RED:
-      Serial.println("Setting color: RED");
       color = strip.Color(255, 0, 0);
       break;
     case GREEN:
-      Serial.println("Setting color: GREEN");
       color = strip.Color(0, 255, 0);
       break;
     case BLUE:
-      Serial.println("Setting color: BLUE");
       color = strip.Color(0, 0, 255);
       break;
     case WHITE:
-      Serial.println("Setting color: WHITE");
       color = strip.Color(255, 255, 255);
       break;
     case DARK_ORANGE:
-      Serial.println("Setting color: DARK_ORANGE");
       color = strip.Color(255, 140, 0);
       break;
     case CHARTREUSE:
-      Serial.println("Setting color: CHARTREUSE");
       color = strip.Color(127, 255, 0);
       break;
     case DARK_BLUE:
-      Serial.println("Setting color: DARK_BLUE");
       color = strip.Color(0, 0, 139);
       break;
     case ORANGE:
-      Serial.println("Setting color: ORANGE");
       color = strip.Color(255, 165, 0);
       break;
     case ROYAL_BLUE:
-      Serial.println("Setting color: ROYAL_BLUE");
       color = strip.Color(65, 105, 225);
       break;
     case DARK_VIOLET:
-      Serial.println("Setting color: DARK_VIOLET");
       color = strip.Color(148, 0, 211);
       break;
     case GOLDEN_ROD:
-      Serial.println("Setting color: GOLDEN_ROD");
       color = strip.Color(218, 165, 32);
       break;
     case LIGHT_SEA_GREEN:
-      Serial.println("Setting color: LIGHT_SEA_GREEN");
       color = strip.Color(32, 178, 170);
       break;
     case PURPLE:
-      Serial.println("Setting color: PURPLE");
       color = strip.Color(128, 0, 128);
       break;
     case YELLOW:
-      Serial.println("Setting color: YELLOW");
       color = strip.Color(255, 255, 0);
       break;
     case TEAL:
-      Serial.println("Setting color: TEAL");
       color = strip.Color(0, 128, 128);
       break;
     case MAGENTA:
-      Serial.println("Setting color: MAGENTA");
       color = strip.Color(255, 0, 255);
       break;
     default:
-      Serial.println("UNKNOWN");
       lastColor = WHITE;
       return;
   }
 
-  for (int i = 0; i < NUM_LEDS; i++) {
-    strip.setPixelColor(i, color);
-  }
+  //for (uint32_t i = 0; i < NUM_LEDS; i++) {
+    strip.fill(color, 0, NUM_LEDS);
+  //}
 
   while (!IrReceiver.isIdle());
   if (IrReceiver.isIdle()) {
@@ -216,22 +193,18 @@ void setColor(colors val) {
   }
 }
 
-void turnOnOff(int val) {
+void turnOnOff(uint32_t val) {
   if (val == 1) {
     if (state == 1) return;
-    Serial.println("Turning LED on.");
     state = 1;
-    setColor(lastColor);
-    Serial.print("Setting brightness: ");
-    Serial.println(brightness);
     strip.setBrightness(brightness);
-    while (!IrReceiver.isIdle());
-    if (IrReceiver.isIdle()) {
-      strip.show();
-    }
+    setColor(lastColor);
+    //while (!IrReceiver.isIdle());
+    //if (IrReceiver.isIdle()) {
+    //  strip.show();
+    //}
   } else if (val == 0) {
     if (state == 0) return;
-    Serial.println("Turning LED off.");
     brightness = INIT_BRIGHTNESS;
     state = 0;
     strip.clear();
@@ -245,12 +218,10 @@ void turnOnOff(int val) {
 void intensityUp() {
   if (state == 0) return;
   if (brightness < 200) {
-    brightness = brightness + 5;
+    brightness += 10;
   } else {
     return;
   }
-  Serial.print("Setting brightness: ");
-  Serial.println(brightness);
   strip.setBrightness(brightness);
   while (!IrReceiver.isIdle());
   if (IrReceiver.isIdle()) {
@@ -260,13 +231,11 @@ void intensityUp() {
 
 void intensityDown() {
   if (state == 0) return;
-  if (brightness >= 10) {
-    brightness = brightness - 5;
+  if (brightness >= 20) {
+    brightness -= 10;
   } else {
     return;
   }
-  Serial.print("Setting brightness: ");
-  Serial.println(brightness);
   strip.setBrightness(brightness);
   while (!IrReceiver.isIdle());
   if (IrReceiver.isIdle()) {
