@@ -10,7 +10,7 @@
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 uint32_t value;
-uint32_t previousVal;
+uint32_t previousVal = 0x0;
 
 uint32_t state = 0; // 0-off 1-on
 uint32_t brightness = INIT_BRIGHTNESS;
@@ -179,6 +179,7 @@ void setColor(colors val) {
       color = strip.Color(255, 0, 255);
       break;
     default:
+      color = strip.Color(255, 255, 255);
       lastColor = WHITE;
       return;
   }
