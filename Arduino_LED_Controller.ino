@@ -9,7 +9,7 @@
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
-uint32_t value;
+uint32_t value = 0xFC03EF00;
 uint32_t previousVal = 0x0;
 
 uint32_t state = 0; // 0-off 1-on
@@ -22,27 +22,22 @@ colors lastColor = WHITE;
 
 void setup() {
   Serial.begin(9600);
+  delay(250);
+  Serial.println("Setup");
+
   IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); // Start the receiver
 
   strip.begin();
-  while (!IrReceiver.isIdle());
-  if (IrReceiver.isIdle()) {
-    strip.show();
-  }
   strip.setBrightness(brightness);
 
   strip.clear();
-  while (!IrReceiver.isIdle());
-  if (IrReceiver.isIdle()) {
-    strip.show();
-  }
+  strip.show();
 }
 
 void loop() {
-  while (!IrReceiver.isIdle());
   if (IrReceiver.decode()) {
     value = IrReceiver.decodedIRData.decodedRawData;
-
+    Serial.println(value, HEX);
     if (value == 0x0) value = previousVal;
 
     switch (value) {
@@ -119,8 +114,8 @@ void loop() {
         break;
     }
     previousVal = value;
-    IrReceiver.resume(); // Receive the next value
   }
+  IrReceiver.resume(); // Receive the next value 
   delay(250); // small delay to prevent reading errors
 }
 
@@ -128,7 +123,7 @@ void setColor(colors val) {
   if (state == 0) return;
   lastColor = val;
 
-  uint32_t color;
+  uint32_t color = strip.Color(255, 255, 255);
   switch (val) {
     case RED:
       color = strip.Color(255, 0, 0);
@@ -181,17 +176,15 @@ void setColor(colors val) {
     default:
       color = strip.Color(255, 255, 255);
       lastColor = WHITE;
-      return;
+      break;
   }
 
   //for (uint32_t i = 0; i < NUM_LEDS; i++) {
     strip.fill(color, 0, NUM_LEDS);
   //}
 
-  while (!IrReceiver.isIdle());
-  if (IrReceiver.isIdle()) {
-    strip.show();
-  }
+  
+  strip.show();
 }
 
 void turnOnOff(uint32_t val) {
@@ -200,19 +193,12 @@ void turnOnOff(uint32_t val) {
     state = 1;
     strip.setBrightness(brightness);
     setColor(lastColor);
-    //while (!IrReceiver.isIdle());
-    //if (IrReceiver.isIdle()) {
-    //  strip.show();
-    //}
   } else if (val == 0) {
     if (state == 0) return;
     brightness = INIT_BRIGHTNESS;
     state = 0;
     strip.clear();
-    while (!IrReceiver.isIdle());
-    if (IrReceiver.isIdle()) {
-      strip.show();
-    }
+    strip.show();
   }
 }
 
@@ -224,10 +210,7 @@ void intensityUp() {
     return;
   }
   strip.setBrightness(brightness);
-  while (!IrReceiver.isIdle());
-  if (IrReceiver.isIdle()) {
-    strip.show();
-  }
+  strip.show();
 }
 
 void intensityDown() {
@@ -238,10 +221,7 @@ void intensityDown() {
     return;
   }
   strip.setBrightness(brightness);
-  while (!IrReceiver.isIdle());
-  if (IrReceiver.isIdle()) {
-    strip.show();
-  }
+  strip.show();
 }
 
 void perform(actions val) {

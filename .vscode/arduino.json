@@ -1,7 +1,7 @@
 {
     "sketch": "Arduino_LED_Controller.ino",
     "output": "build",
-    "port": "COM4",
+    "port": "/dev/ttyUSB0",
     "board": "arduino:avr:nano",
     "programmer": "avrispmkii",
     "configuration": "cpu=atmega328old"
