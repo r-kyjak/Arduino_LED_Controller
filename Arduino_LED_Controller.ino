@@ -12,8 +12,8 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ
 uint32_t value = 0xFC03EF00;
 uint32_t previousVal = 0x0;
 
-uint32_t state = 0; // 0-off 1-on
-uint32_t brightness = INIT_BRIGHTNESS;
+int state = 0; // 0-off 1-on
+uint8_t brightness = INIT_BRIGHTNESS;
 
 enum colors { RED, GREEN, BLUE, WHITE, DARK_ORANGE, CHARTREUSE, DARK_BLUE, ORANGE, ROYAL_BLUE, DARK_VIOLET, GOLDEN_ROD, LIGHT_SEA_GREEN, PURPLE, YELLOW, TEAL, MAGENTA };
 enum actions { FLASH, STROBE, FADE, SMOOTH };
@@ -31,7 +31,10 @@ void setup() {
   strip.setBrightness(brightness);
 
   strip.clear();
-  strip.show();
+
+  if(IrReceiver.isIdle()){
+    strip.show();
+  }
 }
 
 void loop() {
@@ -179,15 +182,13 @@ void setColor(colors val) {
       break;
   }
 
-  //for (uint32_t i = 0; i < NUM_LEDS; i++) {
+  if(IrReceiver.isIdle()){
     strip.fill(color, 0, NUM_LEDS);
-  //}
-
-  
-  strip.show();
+    strip.show();
+  }
 }
 
-void turnOnOff(uint32_t val) {
+void turnOnOff(int val) {
   if (val == 1) {
     if (state == 1) return;
     state = 1;
@@ -197,8 +198,10 @@ void turnOnOff(uint32_t val) {
     if (state == 0) return;
     brightness = INIT_BRIGHTNESS;
     state = 0;
-    strip.clear();
-    strip.show();
+    if(IrReceiver.isIdle()){
+      strip.clear();
+      strip.show();
+    }
   }
 }
 
@@ -210,7 +213,9 @@ void intensityUp() {
     return;
   }
   strip.setBrightness(brightness);
-  strip.show();
+  if(IrReceiver.isIdle()){
+    strip.show();
+  }
 }
 
 void intensityDown() {
@@ -221,7 +226,9 @@ void intensityDown() {
     return;
   }
   strip.setBrightness(brightness);
-  strip.show();
+  if(IrReceiver.isIdle()){
+    strip.show();
+  }
 }
 
 void perform(actions val) {
