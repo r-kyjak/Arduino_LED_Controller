@@ -31,6 +31,7 @@ void setup() {
   strip.setBrightness(brightness);
 
   strip.clear();
+  
   strip.show();
 }
 
