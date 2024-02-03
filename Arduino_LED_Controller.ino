@@ -31,10 +31,7 @@ void setup() {
   strip.setBrightness(brightness);
 
   strip.clear();
-
-  if(IrReceiver.isIdle()){
-    strip.show();
-  }
+  strip.show();
 }
 
 void loop() {
@@ -177,13 +174,13 @@ void setColor(colors val) {
       color = strip.Color(255, 0, 255);
       break;
     default:
-      color = strip.Color(255, 255, 255);
-      lastColor = WHITE;
+      color = strip.Color(255, 255, 0);
+      lastColor = YELLOW;
       break;
   }
+  strip.fill(color, 0, NUM_LEDS);
 
   if(IrReceiver.isIdle()){
-    strip.fill(color, 0, NUM_LEDS);
     strip.show();
   }
 }
@@ -198,8 +195,8 @@ void turnOnOff(int val) {
     if (state == 0) return;
     brightness = INIT_BRIGHTNESS;
     state = 0;
+    strip.clear();
     if(IrReceiver.isIdle()){
-      strip.clear();
       strip.show();
     }
   }
@@ -216,6 +213,7 @@ void intensityUp() {
   if(IrReceiver.isIdle()){
     strip.show();
   }
+  
 }
 
 void intensityDown() {
