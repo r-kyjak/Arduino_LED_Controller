@@ -36,6 +36,7 @@ void setup() {
 
 void loop() {
   if (IrReceiver.decode()) {
+    Serial.println("Loop");
     value = IrReceiver.decodedIRData.decodedRawData;
     Serial.println(value, HEX);
     if (value == 0x0) value = previousVal;
